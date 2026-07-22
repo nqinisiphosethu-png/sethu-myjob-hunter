@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ResearchRouteImport } from './routes/research'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as EmailRouteImport } from './routes/email'
+import { Route as CoachRouteImport } from './routes/coach'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -30,6 +31,11 @@ const EmailRoute = EmailRouteImport.update({
   path: '/email',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CoachRoute = CoachRouteImport.update({
+  id: '/coach',
+  path: '/coach',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApplicationsRoute = ApplicationsRouteImport.update({
   id: '/applications',
   path: '/applications',
@@ -44,6 +50,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/applications': typeof ApplicationsRoute
+  '/coach': typeof CoachRoute
   '/email': typeof EmailRoute
   '/planner': typeof PlannerRoute
   '/research': typeof ResearchRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/applications': typeof ApplicationsRoute
+  '/coach': typeof CoachRoute
   '/email': typeof EmailRoute
   '/planner': typeof PlannerRoute
   '/research': typeof ResearchRoute
@@ -59,21 +67,36 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/applications': typeof ApplicationsRoute
+  '/coach': typeof CoachRoute
   '/email': typeof EmailRoute
   '/planner': typeof PlannerRoute
   '/research': typeof ResearchRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/applications' | '/email' | '/planner' | '/research'
+  fullPaths:
+    | '/'
+    | '/applications'
+    | '/coach'
+    | '/email'
+    | '/planner'
+    | '/research'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/applications' | '/email' | '/planner' | '/research'
-  id: '__root__' | '/' | '/applications' | '/email' | '/planner' | '/research'
+  to: '/' | '/applications' | '/coach' | '/email' | '/planner' | '/research'
+  id:
+    | '__root__'
+    | '/'
+    | '/applications'
+    | '/coach'
+    | '/email'
+    | '/planner'
+    | '/research'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApplicationsRoute: typeof ApplicationsRoute
+  CoachRoute: typeof CoachRoute
   EmailRoute: typeof EmailRoute
   PlannerRoute: typeof PlannerRoute
   ResearchRoute: typeof ResearchRoute
@@ -102,6 +125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/coach': {
+      id: '/coach'
+      path: '/coach'
+      fullPath: '/coach'
+      preLoaderRoute: typeof CoachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/applications': {
       id: '/applications'
       path: '/applications'
@@ -122,6 +152,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApplicationsRoute: ApplicationsRoute,
+  CoachRoute: CoachRoute,
   EmailRoute: EmailRoute,
   PlannerRoute: PlannerRoute,
   ResearchRoute: ResearchRoute,
