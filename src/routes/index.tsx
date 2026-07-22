@@ -1,211 +1,274 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  Sparkles,
+  CalendarClock,
   Briefcase,
-  CalendarCheck,
-  Clock,
-  Target,
-  Plus,
   Search,
   Mail,
   MessageSquare,
-  TrendingUp,
-  TrendingDown,
+  ArrowRight,
+  ShieldCheck,
   CheckCircle2,
-  Sparkles,
-  ArrowUpRight,
+  Moon,
+  Sun,
 } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { useTheme } from "@/hooks/use-theme";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Dashboard · MyJob Hunter" },
-      { name: "description", content: "Your AI-powered career command center." },
+      { title: "MyJob Hunter — Your calm, AI-powered job search workspace" },
+      {
+        name: "description",
+        content:
+          "Plan applications, research companies, and prep for interviews in one calm workspace. MyJob Hunter turns the chaos of job hunting into a clear daily plan.",
+      },
+      { property: "og:title", content: "MyJob Hunter — Your AI career workspace" },
+      {
+        property: "og:description",
+        content: "One calm workspace for applications, research, emails and interview prep.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Dashboard,
+  component: Landing,
 });
 
-const stats = [
-  { label: "Applications Submitted", value: 24, delta: "+12%", up: true, icon: Briefcase, tone: "text-primary" },
-  { label: "Interviews Scheduled", value: 5, delta: "+2 this week", up: true, icon: CalendarCheck, tone: "text-[color:var(--success)]" },
-  { label: "Pending Applications", value: 9, delta: "-1", up: false, icon: Clock, tone: "text-[color:var(--warning)]" },
-  { label: "Weekly Goals", value: "7 / 10", delta: "70% done", up: true, icon: Target, tone: "text-[color:var(--info)]" },
+const features = [
+  {
+    icon: CalendarClock,
+    title: "AI Planner",
+    desc: "Turn your goals into a realistic daily and weekly schedule.",
+  },
+  {
+    icon: Briefcase,
+    title: "Applications Tracker",
+    desc: "See every application, deadline and next step in one place.",
+  },
+  {
+    icon: Search,
+    title: "Research Assistant",
+    desc: "Instant company briefs, culture notes and tailored interview tips.",
+  },
+  {
+    icon: Mail,
+    title: "Smart Emails",
+    desc: "Draft cover letters and follow-ups in your own tone in seconds.",
+  },
+  {
+    icon: MessageSquare,
+    title: "Career Coach",
+    desc: "A patient AI mentor for CV feedback and mock interviews.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Responsible AI",
+    desc: "Your data stays yours. Review every AI output before it goes out.",
+  },
 ];
 
-const tasks = [
-  { text: "Update CV with latest project", done: true },
-  { text: "Research Company: Northwind Labs", done: true },
-  { text: "Prepare for Stripe technical interview", done: false },
-  { text: "Send follow-up email to Acme Corp", done: false },
-  { text: "Practice 3 STAR interview answers", done: false },
+const steps = [
+  { n: "01", t: "Tell us your goal", d: "Share your target roles, timeline and priorities." },
+  { n: "02", t: "Get a clear plan", d: "Your AI planner breaks it into small, focused tasks." },
+  { n: "03", t: "Apply with confidence", d: "Track progress, prep for interviews, land the role." },
 ];
 
-const recs = [
-  { text: "Follow up on your Acme Corp application — it's been 7 days.", tag: "Action" },
-  { text: "You have a Stripe interview tomorrow. Review their engineering blog.", tag: "Reminder" },
-  { text: "Research Northwind Labs before your Thursday screen.", tag: "Prep" },
-];
-
-type Status = "Applied" | "Interview" | "Assessment" | "Offer" | "Rejected" | "Saved";
-const statusStyles: Record<Status, string> = {
-  Applied: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
-  Interview: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20",
-  Assessment: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-  Offer: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-  Rejected: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20",
-  Saved: "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20",
-};
-
-const applications: {
-  company: string;
-  position: string;
-  status: Status;
-  deadline: string;
-  priority: "High" | "Medium" | "Low";
-}[] = [
-  { company: "Stripe", position: "Graduate SWE", status: "Interview", deadline: "Tomorrow", priority: "High" },
-  { company: "Acme Corp", position: "Junior Developer", status: "Applied", deadline: "In 3 days", priority: "Medium" },
-  { company: "Northwind Labs", position: "Data Analyst", status: "Assessment", deadline: "Fri, Nov 28", priority: "High" },
-  { company: "Globex", position: "Frontend Engineer", status: "Saved", deadline: "Dec 05", priority: "Low" },
-  { company: "Initech", position: "Product Analyst", status: "Rejected", deadline: "—", priority: "Low" },
-];
-
-function Dashboard() {
+function Landing() {
+  const { theme, toggle } = useTheme();
   return (
-    <AppShell
-      title="Welcome back, Jamie 👋"
-      subtitle="Let's get one step closer to your dream job."
-      actions={
-        <>
-          <Button asChild variant="outline">
-            <Link to="/applications"><Plus className="mr-1.5 h-4 w-4" /> Add Application</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link to="/research"><Search className="mr-1.5 h-4 w-4" /> Research Company</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link to="/email"><Mail className="mr-1.5 h-4 w-4" /> Generate Email</Link>
-          </Button>
-          <Button asChild className="text-primary-foreground" style={{ background: "var(--gradient-primary)" }}>
-            <Link to="/coach"><MessageSquare className="mr-1.5 h-4 w-4" /> Chat with AI</Link>
-          </Button>
-        </>
-      }
-    >
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map((s) => (
-          <Card key={s.label} className="transition-shadow hover:shadow-md">
-            <CardContent className="p-5">
-              <div className="flex items-start justify-between">
-                <div className={`grid h-10 w-10 place-items-center rounded-xl bg-primary/10 ${s.tone}`}>
-                  <s.icon className="h-5 w-5" />
-                </div>
-                <div className={`flex items-center gap-1 text-xs font-medium ${s.up ? "text-[color:var(--success)]" : "text-muted-foreground"}`}>
-                  {s.up ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
-                  {s.delta}
-                </div>
-              </div>
-              <div className="mt-4 text-2xl font-bold tracking-tight">{s.value}</div>
-              <div className="text-xs text-muted-foreground">{s.label}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <div>
-              <CardTitle className="text-base">Today's tasks</CardTitle>
-              <p className="text-xs text-muted-foreground">Generated by AI based on your priorities</p>
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Nav */}
+      <header className="sticky top-0 z-30 border-b bg-background/80 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <Link to="/" className="flex items-center gap-2.5">
+            <div
+              className="grid h-9 w-9 place-items-center rounded-xl shadow-[var(--shadow-elegant)]"
+              style={{ background: "var(--gradient-primary)" }}
+            >
+              <Sparkles className="h-5 w-5 text-primary-foreground" />
             </div>
-            <Badge variant="secondary"><Sparkles className="mr-1 h-3 w-3" />AI</Badge>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {tasks.map((t) => (
-              <div key={t.text} className="flex items-center gap-3 rounded-lg border bg-muted/30 px-3 py-2.5 transition-colors hover:bg-muted/60">
-                <CheckCircle2 className={`h-5 w-5 shrink-0 ${t.done ? "text-[color:var(--success)]" : "text-muted-foreground/50"}`} />
-                <span className={`flex-1 text-sm ${t.done ? "text-muted-foreground line-through" : ""}`}>{t.text}</span>
-              </div>
-            ))}
-            <div className="pt-2">
-              <div className="mb-1.5 flex justify-between text-xs text-muted-foreground">
-                <span>Daily progress</span><span>2 / 5</span>
-              </div>
-              <Progress value={40} />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-base">AI Recommendations</CardTitle>
-            <Sparkles className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {recs.map((r) => (
-              <div key={r.text} className="rounded-lg border bg-gradient-to-br from-primary/5 to-transparent p-3">
-                <Badge variant="outline" className="mb-1.5 text-[10px]">{r.tag}</Badge>
-                <p className="text-sm leading-snug">{r.text}</p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card className="mt-6">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-base">Recent applications</CardTitle>
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/applications">View all <ArrowUpRight className="ml-1 h-3.5 w-3.5" /></Link>
-          </Button>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Company</TableHead>
-                  <TableHead>Position</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Deadline</TableHead>
-                  <TableHead className="text-right">Priority</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {applications.map((a) => (
-                  <TableRow key={a.company}>
-                    <TableCell className="font-medium">{a.company}</TableCell>
-                    <TableCell className="text-muted-foreground">{a.position}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={statusStyles[a.status]}>{a.status}</Badge>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">{a.deadline}</TableCell>
-                    <TableCell className="text-right">
-                      <Badge variant={a.priority === "High" ? "destructive" : a.priority === "Medium" ? "default" : "secondary"}>
-                        {a.priority}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <span className="text-sm font-bold tracking-tight sm:text-base">MyJob Hunter</span>
+          </Link>
+          <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
+            <a href="#features" className="hover:text-foreground">Features</a>
+            <a href="#how" className="hover:text-foreground">How it works</a>
+            <a href="#responsible" className="hover:text-foreground">Responsible AI</a>
+          </nav>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" aria-label="Toggle theme" onClick={toggle}>
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            <Button asChild variant="ghost" className="hidden sm:inline-flex">
+              <Link to="/app">Sign in</Link>
+            </Button>
+            <Button
+              asChild
+              className="text-primary-foreground"
+              style={{ background: "var(--gradient-primary)" }}
+            >
+              <Link to="/app">
+                Open app <ArrowRight className="ml-1.5 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-    </AppShell>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px] opacity-60"
+          style={{ background: "var(--gradient-subtle)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-24 -z-10 h-72 w-[720px] -translate-x-1/2 rounded-full blur-3xl opacity-30"
+          style={{ background: "var(--gradient-primary)" }}
+        />
+        <div className="mx-auto max-w-4xl px-4 pb-16 pt-20 text-center sm:px-6 sm:pt-28">
+          <Badge variant="secondary" className="mb-5 inline-flex items-center gap-1.5">
+            <Sparkles className="h-3 w-3" /> AI career assistant
+          </Badge>
+          <h1 className="text-balance text-4xl font-bold tracking-tight sm:text-6xl">
+            Job hunting, without the{" "}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: "var(--gradient-primary)" }}
+            >
+              overwhelm
+            </span>
+            .
+          </h1>
+          <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg">
+            One calm workspace to plan applications, research companies, and prep for
+            interviews — with an AI copilot that always knows the next best step.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button
+              asChild
+              size="lg"
+              className="text-primary-foreground"
+              style={{ background: "var(--gradient-primary)" }}
+            >
+              <Link to="/app">
+                Get started free <ArrowRight className="ml-1.5 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <a href="#how">See how it works</a>
+            </Button>
+          </div>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5 text-[color:var(--success)]" /> No credit card</span>
+            <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5 text-[color:var(--success)]" /> Your data, your control</span>
+            <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5 text-[color:var(--success)]" /> Built for graduates</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section id="features" className="border-t bg-muted/20 py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Everything you need. Nothing you don't.</h2>
+            <p className="mt-3 text-muted-foreground">
+              Six focused tools, one clean workspace. Open only what you need, when you need it.
+            </p>
+          </div>
+          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {features.map((f) => (
+              <div
+                key={f.title}
+                className="group rounded-2xl border bg-card p-6 transition-shadow hover:shadow-[var(--shadow-elegant)]"
+              >
+                <div
+                  className="mb-4 grid h-11 w-11 place-items-center rounded-xl text-primary-foreground"
+                  style={{ background: "var(--gradient-primary)" }}
+                >
+                  <f.icon className="h-5 w-5" />
+                </div>
+                <h3 className="text-base font-semibold">{f.title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section id="how" className="py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">A calm rhythm in three steps</h2>
+            <p className="mt-3 text-muted-foreground">You'll always know what to do next.</p>
+          </div>
+          <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+            {steps.map((s) => (
+              <div key={s.n} className="rounded-2xl border bg-card p-6">
+                <div
+                  className="text-sm font-bold"
+                  style={{ color: "var(--primary)" }}
+                >
+                  {s.n}
+                </div>
+                <h3 className="mt-2 text-lg font-semibold">{s.t}</h3>
+                <p className="mt-1.5 text-sm text-muted-foreground">{s.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Responsible AI */}
+      <section id="responsible" className="border-t bg-muted/20 py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
+          <div
+            className="mx-auto mb-5 grid h-12 w-12 place-items-center rounded-xl text-primary-foreground"
+            style={{ background: "var(--gradient-primary)" }}
+          >
+            <ShieldCheck className="h-6 w-6" />
+          </div>
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">AI that supports you, not replaces you</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+            Every suggestion is a draft — you stay in charge. Review, edit, and approve
+            before anything is sent. Your history is private and easy to clear anytime.
+          </p>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+          <div
+            className="relative overflow-hidden rounded-3xl border p-10 text-center shadow-[var(--shadow-elegant)]"
+            style={{ background: "var(--gradient-primary)" }}
+          >
+            <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
+              Ready to feel in control of your job hunt?
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-primary-foreground/85">
+              Open your workspace and let's plan your first calm, focused day.
+            </p>
+            <div className="mt-7">
+              <Button asChild size="lg" variant="secondary">
+                <Link to="/app">
+                  Open MyJob Hunter <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 text-xs text-muted-foreground sm:flex-row sm:px-6">
+          <div className="font-semibold text-foreground">MyJob Hunter</div>
+          <div>© {new Date().getFullYear()} MyJob Hunter · AI-generated content should always be reviewed.</div>
+        </div>
+      </footer>
+    </div>
   );
 }

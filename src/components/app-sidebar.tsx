@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const nav = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
+  { title: "Dashboard", url: "/app", icon: LayoutDashboard },
   { title: "AI Planner", url: "/planner", icon: CalendarClock },
   { title: "Applications", url: "/applications", icon: Briefcase },
   { title: "Research Assistant", url: "/research", icon: Search },
@@ -41,7 +41,7 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader className="px-3 py-4">
-        <Link to="/" className="flex items-center gap-2.5">
+        <Link to="/app" className="flex items-center gap-2.5">
           <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl shadow-[var(--shadow-elegant)]" style={{ background: "var(--gradient-primary)" }}>
             <Sparkles className="h-5 w-5 text-primary-foreground" />
           </div>
@@ -59,7 +59,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {nav.map((item) => {
-                const active = item.url === "/" ? pathname === "/" : pathname.startsWith(item.url);
+                const active = item.url === "/app" ? pathname === "/app" : pathname.startsWith(item.url);
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
