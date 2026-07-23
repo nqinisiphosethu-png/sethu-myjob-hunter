@@ -78,13 +78,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "MyJob Hunter — AI Career Productivity Assistant" },
-      { name: "description", content: "Plan applications, research companies, draft emails and prep for interviews with an AI-powered career workspace." },
+      { title: "MyJob Hunter — Your calm, AI-powered job search workspace" },
+      { name: "description", content: "Plan applications, research companies, and prep for interviews in one calm workspace. MyJob Hunter turns the chaos of job hunting into a clear daily plan." },
       { name: "author", content: "MyJob Hunter" },
-      { property: "og:title", content: "MyJob Hunter — AI Career Productivity Assistant" },
-      { property: "og:description", content: "Your AI-powered workspace for landing your dream job." },
+      { property: "og:title", content: "MyJob Hunter — Your calm, AI-powered job search workspace" },
+      { property: "og:description", content: "Plan applications, research companies, and prep for interviews in one calm workspace. MyJob Hunter turns the chaos of job hunting into a clear daily plan." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "MyJob Hunter — Your calm, AI-powered job search workspace" },
+      { name: "twitter:description", content: "Plan applications, research companies, and prep for interviews in one calm workspace. MyJob Hunter turns the chaos of job hunting into a clear daily plan." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/47940a49-db0c-4549-a8f8-3c535ea2af4a/id-preview-d81ad67b--c6ab6240-86c8-4b4b-9aed-ddfeaedd322c.lovable.app-1784763220505.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/47940a49-db0c-4549-a8f8-3c535ea2af4a/id-preview-d81ad67b--c6ab6240-86c8-4b4b-9aed-ddfeaedd322c.lovable.app-1784763220505.png" },
     ],
     links: [
       {

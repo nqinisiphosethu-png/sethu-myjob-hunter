@@ -25,10 +25,10 @@ export const Route = createFileRoute("/")({
         content:
           "Plan applications, research companies, and prep for interviews in one calm workspace. MyJob Hunter turns the chaos of job hunting into a clear daily plan.",
       },
-      { property: "og:title", content: "MyJob Hunter — Your AI career workspace" },
+      { property: "og:title", content: "MyJob Hunter — Your calm, AI-powered job search workspace" },
       {
         property: "og:description",
-        content: "One calm workspace for applications, research, emails and interview prep.",
+        content: "Plan applications, research companies, and prep for interviews in one calm workspace. MyJob Hunter turns the chaos of job hunting into a clear daily plan.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
