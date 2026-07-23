@@ -110,7 +110,7 @@ Interactive chatbot that assists users with:
 ### Clone the repository
 
 ```bash
-https://github.com/nqinisiphosethu-png/myjob-hunter.git
+https://github.com/nqinisiphosethu-png/sethu-myjob-hunter.git
 ```
 
 ### Navigate to the project folder
